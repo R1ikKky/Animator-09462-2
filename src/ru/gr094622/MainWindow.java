@@ -26,9 +26,32 @@ public class MainWindow extends JFrame {
 
         // 2. Инициализация объектов согласно конструкторам (x, y, Dimension, Color)
         Random rnd = new Random();
-        objects.add(new Circle(50, 50, new Dimension(40, 40), Color.RED));
-        objects.add(new Rect(150, 100, new Dimension(60, 30), Color.BLUE));
-        objects.add(new Circle(300, 200, new Dimension(50, 50), new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))));
+        int wSize;
+        int hSize;
+        int x, y;
+        Dimension sz;
+        Color c;
+        wSize = rnd.nextInt(40, 101);
+        hSize = rnd.nextInt(40, 101);
+        sz = new Dimension(wSize, hSize);
+        x = rnd.nextInt(0, getWidth()-wSize);
+        y = rnd.nextInt(0, getHeight()-hSize);
+        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        objects.add(new Circle(x, y, sz, c));
+        wSize = rnd.nextInt(40, 101);
+        hSize = rnd.nextInt(40, 101);
+        sz = new Dimension(wSize, hSize);
+        x = rnd.nextInt(0, getWidth()-wSize);
+        y = rnd.nextInt(0, getHeight()-hSize);
+        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        objects.add(new Rect(x, y, sz, c));
+        wSize = rnd.nextInt(40, 101);
+        hSize = rnd.nextInt(40, 101);
+        sz = new Dimension(wSize, hSize);
+        x = rnd.nextInt(0, getWidth()-wSize);
+        y = rnd.nextInt(0, getHeight()-hSize);
+        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        objects.add(new Circle(x, y, sz, c));
 
         // Панель для отрисовки
         renderPanel = new JPanel() {
