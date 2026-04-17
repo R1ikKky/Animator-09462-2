@@ -28,15 +28,32 @@ public class MainWindow extends JFrame {
         setLayout(new BorderLayout());
 
         Random rnd = new Random();
-        for (int i = 0; i < 3; i++) {
-            int wSize = rnd.nextInt(40, 101);
-            int hSize = rnd.nextInt(40, 101);
-            Dimension sz = new Dimension(wSize, hSize);
-            int x = rnd.nextInt(0, W - wSize);
-            int y = rnd.nextInt(0, H - hSize);
-            Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-            objects.add(i % 2 == 0 ? new Circle(x, y, sz, c) : new Rect(x, y, sz, c));
-        }
+        int wSize;
+        int hSize;
+        int x, y;
+        Dimension sz;
+        Color c;
+        wSize = rnd.nextInt(40, 101);
+        hSize = rnd.nextInt(40, 101);
+        sz = new Dimension(wSize, hSize);
+        x = rnd.nextInt(0, getWidth()-wSize);
+        y = rnd.nextInt(0, getHeight()-hSize);
+        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        objects.add(new Circle(x, y, sz, c));
+        wSize = rnd.nextInt(40, 101);
+        hSize = rnd.nextInt(40, 101);
+        sz = new Dimension(wSize, hSize);
+        x = rnd.nextInt(0, getWidth()-wSize);
+        y = rnd.nextInt(0, getHeight()-hSize);
+        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        objects.add(new Rect(x, y, sz, c));
+        wSize = rnd.nextInt(40, 101);
+        hSize = rnd.nextInt(40, 101);
+        sz = new Dimension(wSize, hSize);
+        x = rnd.nextInt(0, getWidth()-wSize);
+        y = rnd.nextInt(0, getHeight()-hSize);
+        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        objects.add(new Circle(x, y, sz, c));
 
         renderPanel = new JPanel() {
             @Override
