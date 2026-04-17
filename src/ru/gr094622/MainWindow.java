@@ -1,4 +1,4 @@
-package ru.gr094622; // Проверьте соответствие вашему пакету
+package ru.gr094622;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-// Импорты ваших классов
+import ru.gr094622.animating.Animator;
+import ru.gr094622.animating.Mover;
 import ru.gr094622.model.GeometryObject;
 import ru.gr094622.painting.Circle;
 import ru.gr094622.painting.Rect;
 
 public class MainWindow extends JFrame {
-    // 1. Определение списка объектов через интерфейс
+    private static final int W = 800;
+    private static final int H = 600;
+
     private final List<GeometryObject> objects = new ArrayList<>();
     private final JPanel renderPanel;
     private final Mover mover;
@@ -21,39 +24,20 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         setTitle("Geometry Animator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(W, H);
         setLayout(new BorderLayout());
 
-        // 2. Инициализация объектов согласно конструкторам (x, y, Dimension, Color)
         Random rnd = new Random();
-        int wSize;
-        int hSize;
-        int x, y;
-        Dimension sz;
-        Color c;
-        wSize = rnd.nextInt(40, 101);
-        hSize = rnd.nextInt(40, 101);
-        sz = new Dimension(wSize, hSize);
-        x = rnd.nextInt(0, getWidth()-wSize);
-        y = rnd.nextInt(0, getHeight()-hSize);
-        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        objects.add(new Circle(x, y, sz, c));
-        wSize = rnd.nextInt(40, 101);
-        hSize = rnd.nextInt(40, 101);
-        sz = new Dimension(wSize, hSize);
-        x = rnd.nextInt(0, getWidth()-wSize);
-        y = rnd.nextInt(0, getHeight()-hSize);
-        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        objects.add(new Rect(x, y, sz, c));
-        wSize = rnd.nextInt(40, 101);
-        hSize = rnd.nextInt(40, 101);
-        sz = new Dimension(wSize, hSize);
-        x = rnd.nextInt(0, getWidth()-wSize);
-        y = rnd.nextInt(0, getHeight()-hSize);
-        c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        objects.add(new Circle(x, y, sz, c));
+        for (int i = 0; i < 3; i++) {
+            int wSize = rnd.nextInt(40, 101);
+            int hSize = rnd.nextInt(40, 101);
+            Dimension sz = new Dimension(wSize, hSize);
+            int x = rnd.nextInt(0, W - wSize);
+            int y = rnd.nextInt(0, H - hSize);
+            Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            objects.add(i % 2 == 0 ? new Circle(x, y, sz, c) : new Rect(x, y, sz, c));
+        }
 
-        // Панель для отрисовки
         renderPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -65,7 +49,6 @@ public class MainWindow extends JFrame {
         };
         renderPanel.setBackground(Color.WHITE);
 
-        // Кнопки управления
         JButton btnStart = new JButton("Старт");
         JButton btnStop = new JButton("Стоп");
 
@@ -76,27 +59,19 @@ public class MainWindow extends JFrame {
         add(renderPanel, BorderLayout.CENTER);
         add(controlPanel, BorderLayout.SOUTH);
 
-        // 3. Инициализация логики
-        mover = new Mover(objects, renderPanel);
-        animator = new Animator(renderPanel);
-
-        new Thread(mover).start();
-        new Thread(animator).start();
+        Dimension panelSize = new Dimension(W, H);
+        mover = new Mover(objects);
+        mover.setSize(panelSize);
+        animator = new Animator(objects, panelSize, renderPanel);
 
         btnStart.addActionListener(e -> {
-            mover.setRunning(true);
-            animator.setRunning(true);
+            mover.start();
+            animator.start();
         });
 
         btnStop.addActionListener(e -> {
-            mover.setRunning(false);
-            animator.setRunning(false);
-        });
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new MainWindow().setVisible(true);
+            mover.stop();
+            animator.stop();
         });
     }
 }

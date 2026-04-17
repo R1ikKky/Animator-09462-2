@@ -8,7 +8,7 @@ import java.util.List;
 public class Mover implements Animatable, Runnable {
     private List<GeometryObject> objects;
     private Dimension size;
-    private boolean isRunning = false;
+    private volatile boolean isRunning = false;
     private Thread thread;
 
     public Mover(List<GeometryObject> objects) {
@@ -31,7 +31,7 @@ public class Mover implements Animatable, Runnable {
             int newX = obj.getX() + obj.getXSpeed();
             int newY = obj.getY() + obj.getYSpeed();
 
-            if (newX < 0 || newX + obj.getSize().width > size.height) {
+            if (newX < 0 || newX + obj.getSize().width > size.width) {
                 obj.inverseXSpeed();
             } else {
                 obj.setX(newX);
